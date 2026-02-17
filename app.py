@@ -371,17 +371,35 @@ def color_for_class(class_name, palette=None):
     idx = int(digest, 16) % len(palette)
     return palette[idx]
 
+def resolve_env_path(path: str):
+    candidate_paths = []
+    path_obj = Path(path)
+    if path_obj.is_absolute():
+        candidate_paths.append(path_obj)
+    else:
+        candidate_paths.append(Path.cwd() / path_obj)
+        try:
+            script_dir = Path(__file__).resolve().parent
+        except NameError:
+            script_dir = Path.cwd()
+        candidate_paths.append(script_dir / path_obj)
+    for candidate in candidate_paths:
+        if candidate.exists():
+            return candidate
+    return None
+
 def load_env_file(path=".env"):
     try:
         if hasattr(st, "secrets"):
             for key, value in st.secrets.items():
-                if key and key not in os.environ:
+                if key and (key not in os.environ or not os.environ.get(key)):
                     os.environ[key] = str(value)
     except Exception:
         pass
-    if not os.path.exists(path):
+    env_path = resolve_env_path(path)
+    if not env_path:
         return
-    with open(path, "r", encoding="utf-8") as handle:
+    with open(env_path, "r", encoding="utf-8") as handle:
         for raw in handle:
             line = raw.strip()
             if not line or line.startswith("#") or "=" not in line:
@@ -389,7 +407,7 @@ def load_env_file(path=".env"):
             key, value = line.split("=", 1)
             key = key.strip()
             value = value.strip().strip('"').strip("'")
-            if key and key not in os.environ:
+            if key and (key not in os.environ or not os.environ.get(key)):
                 os.environ[key] = value
 
 def env_first(*keys, default=None):
@@ -1236,52 +1254,53 @@ if st.session_state.get("extracted_data"):
 # -----------------------------------------------------------------------------
 # STEP 8: Populate DBSM (Neo4j Sandbox)
 # -----------------------------------------------------------------------------
-st.subheader("**Step 8:** Populate DBSM (Neo4j Sandbox)")
-st.markdown(
-    "Uses Neo4j credentials from `.env` (NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD). "
-    "This populates `Drawing`, `System`, `Function`, `Instrument` with edges."
-)
+if st.session_state.get("extracted_data"):
+    st.subheader("**Step 8:** Populate DBSM (Neo4j Sandbox)")
+    st.markdown(
+        "Uses Neo4j credentials from `.env` (NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD). "
+        "This populates `Drawing`, `System`, `Function`, `Instrument` with edges."
+    )
 
-data_source = st.radio(
-    "Data source",
-    ["Use current extracted data", "Use local CSV path"],
-    horizontal=True
-)
+    data_source = st.radio(
+        "Data source",
+        ["Use current extracted data", "Use local CSV path"],
+        horizontal=True
+    )
 
-csv_path = None
-if data_source == "Use local CSV path":
-    csv_path = st.text_input("CSV path", value="tagnames.csv")
-else:
-    if not st.session_state.get("extracted_data"):
-        st.warning("No extracted data in session. Run OCR or use a CSV path.")
+    csv_path = None
+    if data_source == "Use local CSV path":
+        csv_path = st.text_input("CSV path", value="tagnames.csv")
+    else:
+        if not st.session_state.get("extracted_data"):
+            st.warning("No extracted data in session. Run OCR or use a CSV path.")
 
-batch_size = st.number_input("Batch size", min_value=50, max_value=5000, value=500, step=50)
+    batch_size = st.number_input("Batch size", min_value=50, max_value=5000, value=500, step=50)
 
-if st.button("Populate DBSM"):
-    try:
-        if data_source == "Use current extracted data":
-            rows = build_dbsm_rows_from_extracted(st.session_state.get("extracted_data"))
-        else:
-            if not csv_path or not os.path.exists(csv_path):
-                st.error("CSV path not found. Check the path and try again.")
-                rows = []
+    if st.button("Populate DBSM"):
+        try:
+            if data_source == "Use current extracted data":
+                rows = build_dbsm_rows_from_extracted(st.session_state.get("extracted_data"))
             else:
-                df = pd.read_csv(csv_path)
-                rows = build_dbsm_rows_from_df(df)
+                if not csv_path or not os.path.exists(csv_path):
+                    st.error("CSV path not found. Check the path and try again.")
+                    rows = []
+                else:
+                    df = pd.read_csv(csv_path)
+                    rows = build_dbsm_rows_from_df(df)
 
-        if not rows:
-            st.warning("No rows to load.")
-        else:
-            with st.spinner("Populating Neo4j..."):
-                stats = run_dbsm_population(rows, batch_size=int(batch_size))
-            st.success(
-                "Loaded "
-                f"{stats['instruments']} instruments, "
-                f"{stats['drawings']} drawings, "
-                f"{stats['systems']} systems, "
-                f"{stats['functions']} functions."
-            )
-    except Exception as exc:
-        st.error(f"Population failed: {exc}")
+            if not rows:
+                st.warning("No rows to load.")
+            else:
+                with st.spinner("Populating Neo4j..."):
+                    stats = run_dbsm_population(rows, batch_size=int(batch_size))
+                st.success(
+                    "Loaded "
+                    f"{stats['instruments']} instruments, "
+                    f"{stats['drawings']} drawings, "
+                    f"{stats['systems']} systems, "
+                    f"{stats['functions']} functions."
+                )
+        except Exception as exc:
+            st.error(f"Population failed: {exc}")
 
 # -----------------------------------------------------------------------------
