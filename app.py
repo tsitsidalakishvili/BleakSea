@@ -372,6 +372,13 @@ def color_for_class(class_name, palette=None):
     return palette[idx]
 
 def load_env_file(path=".env"):
+    try:
+        if hasattr(st, "secrets"):
+            for key, value in st.secrets.items():
+                if key and key not in os.environ:
+                    os.environ[key] = str(value)
+    except Exception:
+        pass
     if not os.path.exists(path):
         return
     with open(path, "r", encoding="utf-8") as handle:
