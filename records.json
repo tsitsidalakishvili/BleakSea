@@ -1,0 +1,248 @@
+﻿[
+  {
+    "nodes": [
+      {
+        "identity": -109,
+        "labels": [
+          "Drawing"
+        ],
+        "properties": {
+          "name": "Drawing",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-109"
+      },
+      {
+        "identity": -111,
+        "labels": [
+          "Function"
+        ],
+        "properties": {
+          "name": "Function",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-111"
+      },
+      {
+        "identity": -112,
+        "labels": [
+          "Equipment"
+        ],
+        "properties": {
+          "name": "Equipment",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-112"
+      },
+      {
+        "identity": -116,
+        "labels": [
+          "MarineZone"
+        ],
+        "properties": {
+          "name": "MarineZone",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-116"
+      },
+      {
+        "identity": -113,
+        "labels": [
+          "Instrument"
+        ],
+        "properties": {
+          "name": "Instrument",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-113"
+      },
+      {
+        "identity": -114,
+        "labels": [
+          "Drain"
+        ],
+        "properties": {
+          "name": "Drain",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-114"
+      },
+      {
+        "identity": -115,
+        "labels": [
+          "Outfall"
+        ],
+        "properties": {
+          "name": "Outfall",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-115"
+      },
+      {
+        "identity": -117,
+        "labels": [
+          "Species"
+        ],
+        "properties": {
+          "name": "Species",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-117"
+      },
+      {
+        "identity": -110,
+        "labels": [
+          "System"
+        ],
+        "properties": {
+          "name": "System",
+          "indexes": [],
+          "constraints": []
+        },
+        "elementId": "-110"
+      }
+    ],
+    "relationships": [
+      {
+        "identity": -121,
+        "start": -116,
+        "end": -117,
+        "type": "HABITAT_OF",
+        "properties": {
+          "name": "HABITAT_OF"
+        },
+        "elementId": "-121",
+        "startNodeElementId": "-116",
+        "endNodeElementId": "-117"
+      },
+      {
+        "identity": -118,
+        "start": -112,
+        "end": -114,
+        "type": "DISCHARGES_TO",
+        "properties": {
+          "name": "DISCHARGES_TO"
+        },
+        "elementId": "-118",
+        "startNodeElementId": "-112",
+        "endNodeElementId": "-114"
+      },
+      {
+        "identity": -119,
+        "start": -114,
+        "end": -115,
+        "type": "LEADS_TO",
+        "properties": {
+          "name": "LEADS_TO"
+        },
+        "elementId": "-119",
+        "startNodeElementId": "-114",
+        "endNodeElementId": "-115"
+      },
+      {
+        "identity": -113,
+        "start": -112,
+        "end": -110,
+        "type": "BELONGS_TO",
+        "properties": {
+          "name": "BELONGS_TO"
+        },
+        "elementId": "-113",
+        "startNodeElementId": "-112",
+        "endNodeElementId": "-110"
+      },
+      {
+        "identity": -114,
+        "start": -113,
+        "end": -110,
+        "type": "BELONGS_TO",
+        "properties": {
+          "name": "BELONGS_TO"
+        },
+        "elementId": "-114",
+        "startNodeElementId": "-113",
+        "endNodeElementId": "-110"
+      },
+      {
+        "identity": -112,
+        "start": -113,
+        "end": -109,
+        "type": "APPEARS_IN",
+        "properties": {
+          "name": "APPEARS_IN"
+        },
+        "elementId": "-112",
+        "startNodeElementId": "-113",
+        "endNodeElementId": "-109"
+      },
+      {
+        "identity": -111,
+        "start": -112,
+        "end": -109,
+        "type": "APPEARS_IN",
+        "properties": {
+          "name": "APPEARS_IN"
+        },
+        "elementId": "-111",
+        "startNodeElementId": "-112",
+        "endNodeElementId": "-109"
+      },
+      {
+        "identity": -120,
+        "start": -115,
+        "end": -116,
+        "type": "IMPACTS",
+        "properties": {
+          "name": "IMPACTS"
+        },
+        "elementId": "-120",
+        "startNodeElementId": "-115",
+        "endNodeElementId": "-116"
+      },
+      {
+        "identity": -117,
+        "start": -112,
+        "end": -112,
+        "type": "FLOWS_TO",
+        "properties": {
+          "name": "FLOWS_TO"
+        },
+        "elementId": "-117",
+        "startNodeElementId": "-112",
+        "endNodeElementId": "-112"
+      },
+      {
+        "identity": -115,
+        "start": -112,
+        "end": -111,
+        "type": "HAS_FUNCTION",
+        "properties": {
+          "name": "HAS_FUNCTION"
+        },
+        "elementId": "-115",
+        "startNodeElementId": "-112",
+        "endNodeElementId": "-111"
+      },
+      {
+        "identity": -116,
+        "start": -113,
+        "end": -111,
+        "type": "HAS_FUNCTION",
+        "properties": {
+          "name": "HAS_FUNCTION"
+        },
+        "elementId": "-116",
+        "startNodeElementId": "-113",
+        "endNodeElementId": "-111"
+      }
+    ]
+  }
+]

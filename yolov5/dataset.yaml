@@ -1,0 +1,7 @@
+train: C:\Users\Tsitsi\Desktop\experiments\P-ID\yolo\images\train
+val: C:\Users\Tsitsi\Desktop\experiments\P-ID\yolo\images\val
+test: C:\Users\Tsitsi\Desktop\experiments\P-ID\yolo\images\test  # optional
+
+# Classes
+nc: 4  # number of classes
+names: ['Instrument', 'Instrument-square', 'Instrument-offset', 'Instrument-square-offset']
